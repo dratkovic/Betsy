@@ -1,7 +1,7 @@
 using System.Reflection;
 using Betsy.Application.Common.Interfaces;
-using Betsy.Domain;
 using Betsy.Domain.Common;
+using Betsy.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

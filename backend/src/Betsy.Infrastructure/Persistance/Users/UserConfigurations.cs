@@ -1,6 +1,4 @@
 ﻿using Betsy.Domain;
-using Betsy.Domain.Users;
-using Betsy.Infrastructure.Authentication.PasswordHasher;
 using Betsy.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

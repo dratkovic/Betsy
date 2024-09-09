@@ -29,7 +29,7 @@ public class User : EntityBase
         Wallet = new Wallet(0, currency);
         _passwordHash = passwordHash;
     }
-    
+
     public bool IsCorrectPasswordHash(string password, IPasswordHasher passwordHasher)
     {
         return passwordHasher.IsCorrectPassword(password, _passwordHash);

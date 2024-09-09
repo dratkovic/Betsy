@@ -1,5 +1,5 @@
-﻿using Betsy.Domain;
-using Betsy.Domain.Common;
+﻿using Betsy.Domain.Common;
+using Betsy.Domain;
 
 namespace Newsy.Domain.Events;
 

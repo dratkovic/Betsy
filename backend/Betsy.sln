@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1806D2BE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Betsy.Api.Tests.Integration", "tests\Betsy.Api.Tests.Integration\Betsy.Api.Tests.Integration.csproj", "{70778EE3-5D36-4BAD-B826-54DF8E7DCEA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Betsy.Domain.Tests.Unit", "tests\Betsy.Domain.Tests.Unit\Betsy.Domain.Tests.Unit.csproj", "{C2AC3809-5DA8-4718-993D-BD5354DF9F0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{70778EE3-5D36-4BAD-B826-54DF8E7DCEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70778EE3-5D36-4BAD-B826-54DF8E7DCEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70778EE3-5D36-4BAD-B826-54DF8E7DCEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2AC3809-5DA8-4718-993D-BD5354DF9F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2AC3809-5DA8-4718-993D-BD5354DF9F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2AC3809-5DA8-4718-993D-BD5354DF9F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2AC3809-5DA8-4718-993D-BD5354DF9F0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{339EEE34-31C3-4E08-86A1-3579FF46D3F1} = {E2C04127-AA8D-4304-AB0B-C43857ADEFC5}
 		{65E3D554-5336-4A92-964C-3450A8CC5AF4} = {E2C04127-AA8D-4304-AB0B-C43857ADEFC5}
 		{70778EE3-5D36-4BAD-B826-54DF8E7DCEA8} = {1806D2BE-BAAC-452A-967D-50E27A2B5FD8}
+		{C2AC3809-5DA8-4718-993D-BD5354DF9F0F} = {1806D2BE-BAAC-452A-967D-50E27A2B5FD8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F529E744-2662-4F0B-A6B9-1FAA45725BC8}

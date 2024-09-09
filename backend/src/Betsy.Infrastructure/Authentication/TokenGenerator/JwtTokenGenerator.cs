@@ -40,5 +40,4 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
 }
