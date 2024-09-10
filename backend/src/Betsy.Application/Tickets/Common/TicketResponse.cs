@@ -3,6 +3,7 @@
 namespace Betsy.Application.Tickets.Common;
 
 public record TicketResponse(
+    Guid Id,
     decimal TicketAmount,
     decimal Stake,
     decimal Vig,
@@ -13,7 +14,8 @@ public record TicketResponse(
     internal TicketResponse(
         Ticket ticket,
         List<BetType> betTypes) :
-        this(ticket.TicketAmount,
+        this(ticket.Id,
+            ticket.TicketAmount,
             ticket.Stake,
             ticket.Vig,
             ticket.PotentialPayout,

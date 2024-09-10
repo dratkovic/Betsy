@@ -10,5 +10,7 @@ public class TicketConfigurations : AbstractEntityConfiguration<Domain.Ticket>
         builder.HasMany(x => x.OfferSelections)
             .WithOne()
             .HasForeignKey(x => x.TicketId);
+
+        builder.HasIndex(x => x.CreatedAt).IsDescending();
     }
 }
