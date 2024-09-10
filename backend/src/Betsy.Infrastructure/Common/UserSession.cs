@@ -10,7 +10,7 @@ public class UserSession(IHttpContextAccessor? _httpContextAccessor) : IUserSess
 {
     public CurrentUser GetCurrentUser()
     {
-        if (_httpContextAccessor is null)
+        if (_httpContextAccessor?.HttpContext is null)
             return CurrentUser.GuestUser;
 
         if (!_httpContextAccessor.HttpContext!.User.Claims.Any())

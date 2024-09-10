@@ -5,6 +5,7 @@ using Betsy.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Betsy.Infrastructure.Common.Persistence;
 
@@ -77,6 +78,27 @@ public class BetsyDbContext : DbContext, IUnitOfWork
             }
         }
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        foreach (var entry in ChangeTracker.Entries<EntityBase>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = _userSession.GetCurrentUser().Id;
+                    entry.Entity.ModifiedAt = DateTime.UtcNow;
+                    entry.Entity.ModifiedBy = _userSession.GetCurrentUser().Id;
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.ModifiedAt = DateTime.UtcNow;
+                    entry.Entity.ModifiedBy = _userSession.GetCurrentUser().Id;
+                    break;
+            }
+        }
+        return base.SaveChanges();
     }
 
     private static async Task PublishDomainEvents(IPublisher _publisher, List<IDomainEvent> domainEvents)

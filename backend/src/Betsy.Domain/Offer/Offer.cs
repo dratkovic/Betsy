@@ -9,18 +9,26 @@ public sealed class Offer : EntityBase
     public Match Match { get; set; } = null!;
     public Guid MatchId { get; private set; }
     public IList<BetType> BetTypes => _betTypes.ToList();
-    public bool IsSpecialOffer {get; private set; }
-    
+    public bool IsSpecialOffer { get; private set; }
+
     private Offer() { }
 
     public Offer(
         Guid matchId,
         bool isSpecialOffer = false,
+        Dictionary<string, decimal>? betTypes = null,
         Guid? id = null)
         : base(id ?? Guid.NewGuid())
     {
         MatchId = matchId;
         IsSpecialOffer = isSpecialOffer;
+
+        if (betTypes is null) return;
+
+        foreach (var (title, quota) in betTypes)
+        {
+            AddBetType(title, quota);
+        }
     }
 
     public BetType AddBetType(string title, decimal quota)
@@ -28,7 +36,7 @@ public sealed class Offer : EntityBase
         var betType = new BetType(title, quota, Id, MatchId, IsSpecialOffer);
 
         _betTypes.Throw("Betting type already exists").IfContains(betType);
-        
+
         _betTypes.Add(betType);
 
         return betType;

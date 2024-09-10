@@ -34,13 +34,17 @@ public static class MigrationManager
     private static void SeedData(BetsyDbContext context, IPasswordHasher passwordHasher)
     {
         SeedUser(context, passwordHasher);
+        var footballMatches = SeedFootballMatches(context);
+        var tennisMatches = SeedTennisMatches(context);
+        SeedOffers(context, footballMatches);
+        SeedOffers(context, tennisMatches);
     }
 
     private static void SeedUser(BetsyDbContext context, IPasswordHasher passwordHasher)
     {
-        var user = context.Users.FirstOrDefault(x=>x.Email == "jerry@betsy.hr");
+        var user = context.Users.FirstOrDefault(x => x.Email == "jerry@betsy.hr");
 
-        if(user is not null) return;
+        if (user is not null) return;
 
         // For the simplicity of the example, we are seeding one user with a password hash
         // this is not done in configurator because of issue in ef with navigation props
@@ -98,7 +102,7 @@ public static class MigrationManager
     private static List<Match> SeedTennisMatches(BetsyDbContext context)
     {
         var matches = new List<Match>();
-        if (context.Matches.Any())
+        if (context.Matches.Any(x => x.Sport == "Tennis"))
             return matches;
 
         matches.Add(GetTennisMatch("Jannik Sinner", "Alexander Zverev"));
@@ -115,6 +119,26 @@ public static class MigrationManager
         context.SaveChanges();
 
         return matches;
+    }
+
+    private static void SeedOffers(BetsyDbContext context, List<Match> matches)
+    {
+        if (context.Offers.Any())
+            return;
+
+        var i = 0;
+        foreach (var match in matches)
+        {
+            var offer = new Offer(match.Id, false, match.Sport == Sport.Football.ToString() ? GetFootbalBetTypes() : GetTennisBetTypes(match));
+            context.Add(offer);
+
+            if (i++ % 3 != 0) continue;
+
+            var specialOffer = new Offer(match.Id, true, match.Sport == Sport.Football.ToString() ? GetFootbalBetTypes() : GetTennisBetTypes(match));
+            context.Add(specialOffer);
+        }
+
+        context.SaveChanges();
     }
 
     private static DateTime GetMatchStartDate()
@@ -134,5 +158,42 @@ public static class MigrationManager
     private static Match GetTennisMatch(string player1, string player2)
     {
         return new Match(player1, $"{player1} vs {player2}", GetMatchStartDate(), Sport.Tennis, player2);
+    }
+
+    private static Dictionary<string, decimal> GetFootbalBetTypes()
+    {
+        var rnd = new Random();
+        var betTypes = new Dictionary<string, decimal>
+        {
+            { "1", GetRandomQuota(1,3)},
+            { "X", GetRandomQuota(4,7)},
+            { "2", GetRandomQuota(2,5)}
+        };
+
+        return betTypes;
+    }
+
+    private static Dictionary<string, decimal> GetTennisBetTypes(Match match)
+    {
+        var rnd = new Random();
+        var betTypes = new Dictionary<string, decimal>
+        {
+            { match.NameOne, GetRandomQuota(1,4)},
+            { match.NameTwo!, GetRandomQuota(4,7)},
+        };
+
+        return betTypes;
+    }
+
+    private static decimal GetRandomQuota(int from, int to)
+    {
+        var randomQuota = 0m;
+        var rnd = new Random();
+        var rndInt = rnd.Next(from, to);
+
+        randomQuota += rndInt;
+        randomQuota += (decimal)rnd.NextDouble();
+
+        return decimal.Round(randomQuota,2);
     }
 }

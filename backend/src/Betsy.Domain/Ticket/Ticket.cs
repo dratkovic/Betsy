@@ -95,7 +95,7 @@ public sealed class Ticket : EntityBase
         if (ContainsSpecialOffer)
         {
             var countTypesWithQuota =
-                _offerSelections.Count(x => x.BetType is { IsSpecialOffer: false, Quota: > 1.1m });
+                _offerSelections.Count(x => x.BetType is { IsSpecialOffer: false, Quota: >= 1.1m });
 
             if (countTypesWithQuota < 5)
             {
