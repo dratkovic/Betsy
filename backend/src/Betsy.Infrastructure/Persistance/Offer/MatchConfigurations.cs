@@ -25,7 +25,11 @@ public class MatchConfigurations : AbstractEntityConfiguration<Match>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.Property(x => x.CorellationId)
+        builder.Property(x => x.CorrelationId)
             .HasMaxLength(50);
+
+        builder.HasIndex(x => x.StartsAtUtc).IsDescending();
+        builder.HasIndex(x => x.NameOne);
+        builder.HasIndex(x => x.NameTwo);
     }
 }

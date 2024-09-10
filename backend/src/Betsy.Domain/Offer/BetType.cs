@@ -5,7 +5,8 @@ namespace Betsy.Domain;
 
 public sealed class BetType : EntityBase
 {
-    public Guid OfferId {get; private set; }
+    public Guid OfferId { get; private set; }
+    public Match Match { get; private set; } = null!;
     public Guid MatchId { get; private set; }
 
     public string Title { get; private set; } = string.Empty;

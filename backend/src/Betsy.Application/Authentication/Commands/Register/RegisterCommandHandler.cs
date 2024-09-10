@@ -5,19 +5,20 @@ using Betsy.Domain;
 using Betsy.Domain.Common;
 using MediatR;
 using ErrorOr;
+using Microsoft.EntityFrameworkCore;
 
 namespace Betsy.Application.Authentication.Commands.Register;
 
 public class RegisterCommandHandler(
+    IBetsyDbContext _dbContext,
     IJwtTokenGenerator _jwtTokenGenerator,
-    IPasswordHasher _passwordHasher,
-    IUserRepository userRepository,
-    IUnitOfWork _unitOfWork)
+    IPasswordHasher _passwordHasher)
         : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        if (await userRepository.ExistsByEmailAsync(command.Email, cancellationToken))
+        var email = command.Email.ToLower();
+        if (await _dbContext.Set<User>().AnyAsync(x => x.Email == email, cancellationToken))
         {
             return Error.Conflict(description: "User already exists");
         }
@@ -35,8 +36,8 @@ public class RegisterCommandHandler(
             command.Email.ToLower(),
             hashPasswordResult.Value);
 
-        await userRepository.AddAsync(user);
-        await _unitOfWork.CommitChangesAsync(cancellationToken);
+        _dbContext.Set<User>().Add(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var token = _jwtTokenGenerator.GenerateToken(user);
 

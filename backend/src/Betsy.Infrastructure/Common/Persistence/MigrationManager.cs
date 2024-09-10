@@ -42,7 +42,7 @@ public static class MigrationManager
 
     private static void SeedUser(BetsyDbContext context, IPasswordHasher passwordHasher)
     {
-        var user = context.Users.FirstOrDefault(x => x.Email == "jerry@betsy.hr");
+        var user = context.Set<User>().FirstOrDefault(x => x.Email == "jerry@betsy.hr");
 
         if (user is not null) return;
 
@@ -63,7 +63,7 @@ public static class MigrationManager
     private static List<Match> SeedFootballMatches(BetsyDbContext context)
     {
         var matches = new List<Match>();
-        if (context.Matches.Any())
+        if (context.Set<Match>().Any())
             return matches;
 
         matches.Add(GetFootballMatch("Dinamo", "Hajduk"));
@@ -102,7 +102,7 @@ public static class MigrationManager
     private static List<Match> SeedTennisMatches(BetsyDbContext context)
     {
         var matches = new List<Match>();
-        if (context.Matches.Any(x => x.Sport == "Tennis"))
+        if (context.Set<Match>().Any(x => x.Sport == "Tennis"))
             return matches;
 
         matches.Add(GetTennisMatch("Jannik Sinner", "Alexander Zverev"));
@@ -123,7 +123,7 @@ public static class MigrationManager
 
     private static void SeedOffers(BetsyDbContext context, List<Match> matches)
     {
-        if (context.Offers.Any())
+        if (context.Set<Offer>().Any())
             return;
 
         var i = 0;
@@ -194,6 +194,6 @@ public static class MigrationManager
         randomQuota += rndInt;
         randomQuota += (decimal)rnd.NextDouble();
 
-        return decimal.Round(randomQuota,2);
+        return decimal.Round(randomQuota, 2);
     }
 }

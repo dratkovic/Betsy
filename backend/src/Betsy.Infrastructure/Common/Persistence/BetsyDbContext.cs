@@ -6,25 +6,19 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
+using Betsy.Application.Common.Interfaces.Repositories;
 
 namespace Betsy.Infrastructure.Common.Persistence;
 
-public class BetsyDbContext : DbContext, IUnitOfWork
+public class BetsyDbContext : DbContext, IBetsyDbContext
 {
     private readonly IPublisher _publisher;
     private readonly IUserSession _userSession;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    // used both approaches to show the difference
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Match> Matches { get; set; } = null!;
-    public DbSet<Ticket> Tickets { get; set; } = null!;
-    public DbSet<Offer> Offers { get; set; } = null!;
-
-    // used generic approach to show the difference
-    public DbSet<T> GetDbSet<T>() where T : EntityBase
+    public new DbSet<T> Set<T>() where T : EntityBase
     {
-        return Set<T>();
+        return base.Set<T>();
     }
 
     public BetsyDbContext(DbContextOptions options,
@@ -61,26 +55,17 @@ public class BetsyDbContext : DbContext, IUnitOfWork
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        foreach (var entry in ChangeTracker.Entries<EntityBase>())
-        {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = _userSession.GetCurrentUser().Id;
-                    entry.Entity.ModifiedAt = DateTime.UtcNow;
-                    entry.Entity.ModifiedBy = _userSession.GetCurrentUser().Id;
-                    break;
-                case EntityState.Modified:
-                    entry.Entity.ModifiedAt = DateTime.UtcNow;
-                    entry.Entity.ModifiedBy = _userSession.GetCurrentUser().Id;
-                    break;
-            }
-        }
+        MarkAuditable();
         return base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
+    {
+        MarkAuditable();
+        return base.SaveChanges();
+    }
+
+    private void MarkAuditable()
     {
         foreach (var entry in ChangeTracker.Entries<EntityBase>())
         {
@@ -98,7 +83,6 @@ public class BetsyDbContext : DbContext, IUnitOfWork
                     break;
             }
         }
-        return base.SaveChanges();
     }
 
     private static async Task PublishDomainEvents(IPublisher _publisher, List<IDomainEvent> domainEvents)
@@ -129,6 +113,8 @@ public class BetsyDbContext : DbContext, IUnitOfWork
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.HasDefaultSchema("bet");
 
         base.OnModelCreating(modelBuilder);
     }

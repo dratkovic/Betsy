@@ -12,8 +12,8 @@ public sealed class Match : EntityBase
 
     // if we will create the match from other service that handle matches
     // results and start/finish etc. we can use this property to correlate
-    public string? CorellationId { get; private set; }
-    
+    public string? CorrelationId { get; private set; }
+
     public string Sport { get; private set; } = string.Empty;
 
     private Match() { }
@@ -24,7 +24,7 @@ public sealed class Match : EntityBase
         DateTime startsAtUtc,
         Sport sport,
         string? nameTwo = null,
-        string? corellationId = null,
+        string? correlationId = null,
         Guid? id = null)
         : base(id ?? Guid.NewGuid())
     {
@@ -37,6 +37,6 @@ public sealed class Match : EntityBase
         Description = description;
         StartsAtUtc = startsAtUtc;
         Sport = sport.ToString();
-        CorellationId = corellationId;
+        CorrelationId = correlationId;
     }
 }

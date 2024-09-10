@@ -24,7 +24,7 @@ namespace Betsy.Domain.Tests.Unit
             match.Description.Should().Be(description);
             match.StartsAtUtc.Should().Be(startsAtUtc);
             match.Sport.Should().Be(sport.ToString());
-            match.CorellationId.Should().Be(corellationId);
+            match.CorrelationId.Should().Be(corellationId);
         }
 
         [Fact]

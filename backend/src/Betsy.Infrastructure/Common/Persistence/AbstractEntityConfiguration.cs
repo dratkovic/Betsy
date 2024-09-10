@@ -11,7 +11,6 @@ public abstract class AbstractEntityConfiguration<T> : IEntityTypeConfiguration<
 
         builder.HasKey(e => e.Id);
 
-
         builder.Property(e => e.CreatedAt)
             .IsRequired();
         builder.Property(e => e.ModifiedAt)
