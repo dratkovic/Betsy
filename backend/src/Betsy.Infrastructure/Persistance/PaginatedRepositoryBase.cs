@@ -14,7 +14,6 @@ public abstract class PaginatedRepositoryBase<T> : RepositoryBase<T>, IPaginated
     }
 
     protected abstract Expression<Func<T, bool>> GetFilterPredicate(string filter);
-    protected abstract Expression<Func<T, object>>? GetIncludePredicate();
 
     public async Task<PaginationResult<T>> GetPaginatedAsync(PaginationQuery pagination, Expression<Func<T, bool>>? whereExpression, CancellationToken token)
     {
@@ -22,10 +21,7 @@ public abstract class PaginatedRepositoryBase<T> : RepositoryBase<T>, IPaginated
 
         var query = _dbContext.GetDbSet<T>().Where(x => !x.IsDeleted);
 
-        if (GetIncludePredicate() != null)
-        {
-            query = query.Include(GetIncludePredicate()!);
-        }
+        query = ApplyIncludes(query);
 
         if (pagination.Filter != null)
         {

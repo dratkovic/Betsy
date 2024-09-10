@@ -1,4 +1,5 @@
-﻿using Betsy.Domain.Common;
+﻿using System.Linq.Expressions;
+using Betsy.Domain.Common;
 
 namespace Betsy.Application.Common.Interfaces.Repositories;
 public interface IBaseRepository<T> where T : EntityBase

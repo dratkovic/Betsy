@@ -4,8 +4,8 @@
 public enum Sport 
 {
     Football,
-    Basketball,
     Tennis,
+    Basketball,
     Volleyball,
     Handball,
     IceHockey,

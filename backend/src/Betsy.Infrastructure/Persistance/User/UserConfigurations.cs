@@ -1,12 +1,11 @@
-﻿using Betsy.Domain;
-using Betsy.Infrastructure.Common.Persistence;
+﻿using Betsy.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Betsy.Infrastructure.Persistance.Users;
-public class UserConfigurations : AbstractEntityConfiguration<User>
+namespace Betsy.Infrastructure.Persistance.User;
+public class UserConfigurations : AbstractEntityConfiguration<Domain.User>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<User> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Domain.User> builder)
     {
         builder.Property(u => u.FirstName)
             .IsRequired()

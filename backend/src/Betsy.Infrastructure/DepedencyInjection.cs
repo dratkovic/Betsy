@@ -8,7 +8,8 @@ using Betsy.Infrastructure.Authentication.TokenGenerator;
 using Betsy.Infrastructure.Common;
 using Betsy.Infrastructure.Common.Cache;
 using Betsy.Infrastructure.Common.Persistence;
-using Betsy.Infrastructure.Persistance.Users;
+using Betsy.Infrastructure.Persistance.Offer;
+using Betsy.Infrastructure.Persistance.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +32,7 @@ public static class DependencyInjection
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IOfferRepository, OfferRepository>();
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<BetsyDbContext>());
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

@@ -2,6 +2,7 @@
 using Betsy.Domain.Common;
 using Betsy.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Betsy.Infrastructure.Persistance;
 
@@ -17,8 +18,11 @@ public abstract class RepositoryBase<T>(BetsyDbContext dbContext) : IBaseReposit
 
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
-        return await _dbContext.GetDbSet<T>().Where(x => !x.IsDeleted && x.Id == id)
-            .FirstOrDefaultAsync(token);
+        var query = _dbContext.GetDbSet<T>().Where(x => !x.IsDeleted && x.Id == id);
+
+        query = ApplyIncludes(query);
+
+        return await query.FirstOrDefaultAsync(token);
     }
 
     public virtual Task UpdateAsync(T entity, CancellationToken token = default)
@@ -27,4 +31,17 @@ public abstract class RepositoryBase<T>(BetsyDbContext dbContext) : IBaseReposit
         return Task.CompletedTask;
     }
 
+    protected IQueryable<T> ApplyIncludes(IQueryable<T> query)
+    {
+        foreach (var include in GetDefaultIncludePredicates())
+        {
+            query = query.Include(include);
+        }
+        return query;
+    }
+
+    protected virtual IEnumerable<Expression<Func<T, object>>> GetDefaultIncludePredicates()
+    {
+        return Enumerable.Empty<Expression<Func<T, object>>>();
+    }
 }

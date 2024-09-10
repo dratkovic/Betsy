@@ -16,6 +16,9 @@ public class BetsyDbContext : DbContext, IUnitOfWork
 
     // used both approaches to show the difference
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Match> Matches { get; set; } = null!;
+    public DbSet<Ticket> Tickets { get; set; } = null!;
+    public DbSet<Offer> Offers { get; set; } = null!;
 
     // used generic approach to show the difference
     public DbSet<T> GetDbSet<T>() where T : EntityBase
@@ -106,5 +109,11 @@ public class BetsyDbContext : DbContext, IUnitOfWork
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configBuilder)
+    {
+        configBuilder.DefaultTypeMapping<decimal>(b => b.HasPrecision(18, 4));
+        configBuilder.Properties<decimal>().HavePrecision(18, 4);
     }
 }

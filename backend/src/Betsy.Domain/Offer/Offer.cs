@@ -6,49 +6,26 @@ namespace Betsy.Domain;
 public sealed class Offer : EntityBase
 {
     private readonly List<BetType> _betTypes = [];
-
-    public string NameOne {get; private set; } = string.Empty;
-    public string? NameTwo { get; private set; } 
-    public string Description { get; private set; } = string.Empty;
-    public DateTime StartsAtUtc { get; private set; }
+    public Match Match { get; set; } = null!;
+    public Guid MatchId { get; private set; }
     public IList<BetType> BetTypes => _betTypes.ToList();
     public bool IsSpecialOffer {get; private set; }
-
-    // if we will create an offer from other service that handle matches
-    // results and start/finish etc. we can use this property to correlate
-    public string? CorellationId { get; private set; }
-
-    public string Sport { get; private set; } = string.Empty;
-
+    
     private Offer() { }
 
     public Offer(
-        string nameOne,
-        string description,
-        DateTime startsAtUtc, 
-        Sport sport,
-        string? nameTwo = null,
+        Guid matchId,
         bool isSpecialOffer = false,
-        string? corellationId = null,
         Guid? id = null)
         : base(id ?? Guid.NewGuid())
     {
-        nameOne.Throw("Invalid name").IfEmpty();
-        description.Throw("Invalid description").IfEmpty();
-        startsAtUtc.Throw("Invalid start date").IfLessThan(DateTime.UtcNow.AddMinutes(10));
-
-        NameOne = nameOne;
-        NameTwo = nameTwo;
-        Description = description;
-        StartsAtUtc = startsAtUtc;
-        Sport = sport.ToString();
+        MatchId = matchId;
         IsSpecialOffer = isSpecialOffer;
-        CorellationId = corellationId;
     }
 
     public BetType AddBetType(string title, decimal quota)
     {
-        var betType = new BetType(title, quota, Id);
+        var betType = new BetType(title, quota, Id, MatchId, IsSpecialOffer);
 
         _betTypes.Throw("Betting type already exists").IfContains(betType);
         

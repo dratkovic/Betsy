@@ -2,10 +2,10 @@
 using Betsy.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Betsy.Infrastructure.Persistance.Offers;
-public class OfferConfigurations : AbstractEntityConfiguration<Offer>
+namespace Betsy.Infrastructure.Persistance.Offer;
+public class MatchConfigurations : AbstractEntityConfiguration<Match>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<Offer> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Match> builder)
     {
         builder.Property(x => x.NameOne)
             .IsRequired()
@@ -27,9 +27,5 @@ public class OfferConfigurations : AbstractEntityConfiguration<Offer>
 
         builder.Property(x => x.CorellationId)
             .HasMaxLength(50);
-
-        builder.HasMany<BetType>(x => x.BetTypes)
-            .WithOne()
-            .HasForeignKey(x=>x.OfferId);
     }
 }

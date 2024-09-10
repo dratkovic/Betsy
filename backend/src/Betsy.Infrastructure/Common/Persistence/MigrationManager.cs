@@ -33,6 +33,11 @@ public static class MigrationManager
 
     private static void SeedData(BetsyDbContext context, IPasswordHasher passwordHasher)
     {
+        SeedUser(context, passwordHasher);
+    }
+
+    private static void SeedUser(BetsyDbContext context, IPasswordHasher passwordHasher)
+    {
         var user = context.Users.FirstOrDefault(x=>x.Email == "jerry@betsy.hr");
 
         if(user is not null) return;
@@ -49,5 +54,85 @@ public static class MigrationManager
 
         context.Add(seedUser);
         context.SaveChanges();
+    }
+
+    private static List<Match> SeedFootballMatches(BetsyDbContext context)
+    {
+        var matches = new List<Match>();
+        if (context.Matches.Any())
+            return matches;
+
+        matches.Add(GetFootballMatch("Dinamo", "Hajduk"));
+        matches.Add(GetFootballMatch("Barcelona", "Real Madrid"));
+        matches.Add(GetFootballMatch("Bayern", "Lille"));
+        matches.Add(GetFootballMatch("Juventus", "Milan"));
+        matches.Add(GetFootballMatch("PSG", "Marseille"));
+        matches.Add(GetFootballMatch("Inter M.", "Stuttgart"));
+        matches.Add(GetFootballMatch("Celtic", "Slovan B."));
+        matches.Add(GetFootballMatch("Rijeka", "Osijek"));
+        matches.Add(GetFootballMatch("Monaco", "Brentford"));
+        matches.Add(GetFootballMatch("Chelsea", "Everton"));
+        matches.Add(GetFootballMatch("Fulham", "Leicester City"));
+        matches.Add(GetFootballMatch("Newcastle United", "Nottingham Forest"));
+        matches.Add(GetFootballMatch("Southampton", "Tottenham Hotspur"));
+        matches.Add(GetFootballMatch("West Ham United", "Arsenal"));
+        matches.Add(GetFootballMatch("AS Roma", "FC Porto"));
+        matches.Add(GetFootballMatch("SL Benfica", "Athletic Bilbao"));
+        matches.Add(GetFootballMatch("VfB Stuttgart", "Galatasaray"));
+        matches.Add(GetFootballMatch("Olympique Marseille", "Olympique Lyon"));
+        matches.Add(GetFootballMatch("Valencia CF", "Villarreal CF"));
+        matches.Add(GetFootballMatch("Sevilla FC", "SC Freiburg"));
+        matches.Add(GetFootballMatch("Leeds United", "Ipswich Town"));
+        matches.Add(GetFootballMatch("Stade Reims", "RSC Anderlecht"));
+
+        foreach (var match in matches)
+        {
+            context.Add(match);
+        }
+
+        context.SaveChanges();
+
+        return matches;
+    }
+
+    private static List<Match> SeedTennisMatches(BetsyDbContext context)
+    {
+        var matches = new List<Match>();
+        if (context.Matches.Any())
+            return matches;
+
+        matches.Add(GetTennisMatch("Jannik Sinner", "Alexander Zverev"));
+        matches.Add(GetTennisMatch("Carlos Alcaraz", "Novak Djokovic"));
+        matches.Add(GetTennisMatch("Daniil Medvedev", "Andrey Rublev"));
+        matches.Add(GetTennisMatch("Taylor Fritz", "Hubert Hurkacz"));
+        matches.Add(GetTennisMatch("Casper Ruud", "Grigor Dimitrov"));
+
+        foreach (var match in matches)
+        {
+            context.Add(match);
+        }
+
+        context.SaveChanges();
+
+        return matches;
+    }
+
+    private static DateTime GetMatchStartDate()
+    {
+        var random = new Random();
+        var randomHour = random.Next(12, 20);
+
+        var now = DateTime.UtcNow.AddMonths(1);
+        return new DateTime(now.Year, now.Month, now.Day, randomHour, 0, 0);
+    }
+
+    private static Match GetFootballMatch(string team1, string team2)
+    {
+        return new Match(team1, $"{team1} vs {team2}", GetMatchStartDate(), Sport.Football, team2);
+    }
+
+    private static Match GetTennisMatch(string player1, string player2)
+    {
+        return new Match(player1, $"{player1} vs {player2}", GetMatchStartDate(), Sport.Tennis, player2);
     }
 }
