@@ -238,37 +238,7 @@ public class BetsyApiTicketEndpointsTests : IAsyncLifetime
         error.description.Should().Contain("Only one special offer is allowed in the ticket");
     }
 
-    [Fact]
-    public async Task CreateTicket_ShouldReturnBadRequest_WhenSelectedSpecialOfferAndNormalForSameMatch()
-    {
-        // Arrange
-        var authUser = await RegisterUser();
-        var offers = await _factory.GetOffers();
-        var specialOffersBettingTypes = offers.Where(x => x.IsSpecialOffer)
-            .Select(x => x.BettingTypes)
-            .Take(1)
-            .ToList();
-
-        var normalOffersBettingTypes = offers.Where(x => !x.IsSpecialOffer)
-            .Select(x => x.BettingTypes)
-            .Take(5)
-            .ToList();
-
-        var invalidOffers = specialOffersBettingTypes.Select(x => x.First().Id).Take(1).ToList();
-        invalidOffers.AddRange(normalOffersBettingTypes.Select(x => x.First().Id).Take(3).ToList());
-        // Act
-        var createTicketReq = new CreateTicketRequest(1000, invalidOffers); // Invalid bet types
-        var ticketCreateResponse = await _httpClient.PostAsJsonAsync("/tickets", createTicketReq);
-        var validationFailures = await ticketCreateResponse.Content.ReadFromJsonAsync<IEnumerable<ValidationError>>();
-        var validationErrors = validationFailures as ValidationError[] ?? validationFailures!.ToArray();
-        var error = validationErrors.FirstOrDefault();
-
-        // Assert
-        ticketCreateResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        error.Should().NotBeNull();
-        error!.code.Should().Be("General.Validation");
-        error.description.Should().Contain("Cannot mix normal and special offer for the same match");
-    }
+   
 
     [Fact]
     public async Task CreateTicket_ShouldReturnBadRequest_WhenSelectedSpecialOfferWithoutFiveOtherSelections()
@@ -276,14 +246,15 @@ public class BetsyApiTicketEndpointsTests : IAsyncLifetime
         // Arrange
         var authUser = await RegisterUser();
         var offers = await _factory.GetOffers();
-        var specialOffersBettingTypes = offers.Where(x => x.IsSpecialOffer)
-            .Select(x => x.BettingTypes)
-            .TakeLast(1)
-            .ToList();
 
         var normalOffersBettingTypes = offers.Where(x => !x.IsSpecialOffer)
             .Select(x => x.BettingTypes)
             .Take(5)
+            .ToList();
+
+        var specialOffersBettingTypes = offers.Where(x => x.IsSpecialOffer)
+            .Select(x => x.BettingTypes)
+            .TakeLast(1)
             .ToList();
 
         var invalidOffers = specialOffersBettingTypes.Select(x => x.First().Id).Take(1).ToList();

@@ -9,7 +9,7 @@ using Betsy.Api.Endpoints.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.AddServiceDefaults();
+builder.AddServiceDefaults();
 
 builder.AddDb();
 
@@ -22,11 +22,13 @@ builder.Services
 // TODO: need to implement cache policy
 // that will allow to cache requests with Authorization attribute as api consumers usually 
 // put it in all requests
-//builder.AddRedisOutputCache("newsy-cache");
+builder.AddRedisOutputCache("betsy-cache");
 
 // Add services to the container.
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseExceptionHandler();
 

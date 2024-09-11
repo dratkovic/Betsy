@@ -17,17 +17,20 @@ public class OffersEndpoints : IEndpoints
         app.MapGet($"{BaseRoute}/special-offers", GetSpecialOffersAsync)
             .WithName("GetSpecialOffers")
             .Produces<PaginationResult<OfferResponse>>(200)
-            .WithTags(Tag);
+            .WithTags(Tag)
+            .CacheOutput();
 
         app.MapGet($"{BaseRoute}/{{sport}}", GetOffersAsync)
             .WithName("GetOffersBySport")
             .Produces<PaginationResult<OfferResponse>>(200)
-            .WithTags(Tag);
+            .WithTags(Tag)
+            .CacheOutput();
 
         app.MapGet($"{BaseRoute}", GetOffersAsync)
             .WithName("GetOffers")
             .Produces<PaginationResult<OfferResponse>>(200)
-            .WithTags(Tag);
+            .WithTags(Tag)
+            .CacheOutput();
     }
 
     internal static async Task<IResult> GetOffersAsync(
