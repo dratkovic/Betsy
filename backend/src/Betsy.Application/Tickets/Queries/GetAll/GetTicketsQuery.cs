@@ -6,7 +6,7 @@ using ErrorOr;
 using Betsy.Application.Common.Interfaces.Repositories;
 using Betsy.Domain;
 
-namespace Betsy.Application.Tickets.Queries;
+namespace Betsy.Application.Tickets.Queries.GetAll;
 
 [Authorize]
 public class GetTicketsQuery : PaginationQuery, IRequest<ErrorOr<PaginationResult<TicketResponse>>>

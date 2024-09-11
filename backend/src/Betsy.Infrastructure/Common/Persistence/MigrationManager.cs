@@ -35,6 +35,10 @@ public static class MigrationManager
     {
         SeedUser(context, passwordHasher);
         var footballMatches = SeedFootballMatches(context);
+        
+        if(!footballMatches.Any())
+            return;
+
         var tennisMatches = SeedTennisMatches(context);
         SeedOffers(context, footballMatches);
         SeedOffers(context, tennisMatches);
@@ -123,9 +127,6 @@ public static class MigrationManager
 
     private static void SeedOffers(BetsyDbContext context, List<Match> matches)
     {
-        if (context.Set<Offer>().Any())
-            return;
-
         var i = 0;
         foreach (var match in matches)
         {
@@ -166,8 +167,8 @@ public static class MigrationManager
         var betTypes = new Dictionary<string, decimal>
         {
             { "1", GetRandomQuota(1,3)},
-            { "X", GetRandomQuota(4,7)},
-            { "2", GetRandomQuota(2,5)}
+            { "X", GetRandomQuota(2,6)},
+            { "2", GetRandomQuota(1,5)}
         };
 
         return betTypes;

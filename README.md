@@ -33,11 +33,13 @@ For the purpose of defining my seniority level this is example of betting applic
 	- ***Login***  email / password
 
 - Offers
-	- **GetAll** - get all offers that match start is at least 5 min in the future
+	- **Get All** - get all offers that are not special and that match start is at least 5 min in the future
+	- **Get All Special** - get all special offers that match start is at least 5 min in the future
 
 - Tickets
 	- **Create** - pay and create a ticket by selected types from offers
 	- **GetAll** - Get all played tickets
+	- **Get** - Get ticket by Id
 
 	
 - Pagination

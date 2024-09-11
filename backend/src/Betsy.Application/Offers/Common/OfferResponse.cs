@@ -15,6 +15,7 @@ public sealed record OfferResponse(
 }
 
 public sealed record OfferBetTypeResponse(
+    Guid Id,
     string Title,
     decimal Quota
     )
@@ -32,7 +33,7 @@ public static class OfferResponseExtensions
             offer.Match.NameTwo,
             offer.Match.Description,
             offer.Match.StartsAtUtc,
-            offer.BetTypes.Select(x => new OfferBetTypeResponse(x.Title, x.Quota)).ToList());
+            offer.BetTypes.Select(x => new OfferBetTypeResponse(x.Id, x.Title, x.Quota)).ToList());
     }
 }
 

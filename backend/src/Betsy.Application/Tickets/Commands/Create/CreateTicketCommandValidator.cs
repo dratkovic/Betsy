@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Betsy.Application.Tickets.Commands;
+namespace Betsy.Application.Tickets.Commands.Create;
 
 public class CreateTicketCommandValidator : AbstractValidator<CreateTicketCommand>
 {

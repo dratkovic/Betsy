@@ -3,7 +3,7 @@ using Betsy.Application.Tickets.Common;
 using MediatR;
 using ErrorOr;
 
-namespace Betsy.Application.Tickets.Commands;
+namespace Betsy.Application.Tickets.Commands.Create;
 
 [Authorize]
 public record CreateTicketCommand(

@@ -13,6 +13,7 @@ public sealed record OfferResponse(
 }
 
 public sealed record OfferBetTypeResponse(
+    Guid Id,
     string Title,
     decimal Quota
     )

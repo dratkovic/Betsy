@@ -1,13 +1,12 @@
 ﻿using Betsy.Api.Common;
 using Betsy.Api.Endpoints.Internal;
-using Betsy.Application.Offers.Queries.GetAll;
-using Betsy.Application.Tickets.Commands;
-using Betsy.Application.Tickets.Queries;
+using Betsy.Application.Tickets.Commands.Create;
+using Betsy.Application.Tickets.Queries.Get;
+using Betsy.Application.Tickets.Queries.GetAll;
 using Betsy.Contracts.Common;
 using Betsy.Contracts.Ticket;
 using FluentValidation.Results;
 using MediatR;
-using ErrorOr;
 
 namespace Betsy.Api.Endpoints;
 
@@ -25,6 +24,13 @@ public class TicketEndpoints : IEndpoints
             .WithTags(Tag)
             .RequireAuthorization();
 
+        app.MapGet($"{BaseRoute}/{{id:Guid}}", GetTicketAsync)
+            .WithName("GetTicket")
+            .Produces<TicketResponse>(200)
+            .Produces(404)
+            .WithTags(Tag)
+            .RequireAuthorization();
+
         app.MapPost($"{BaseRoute}", CreateTicketAsync)
             .WithName("CreateTicket")
             .Accepts<CreateTicketRequest>(ContentType)
@@ -33,6 +39,18 @@ public class TicketEndpoints : IEndpoints
             .Produces(401)
             .WithTags(Tag)
             .RequireAuthorization();
+    }
+
+    internal static async Task<IResult> GetTicketAsync(
+        Guid id,
+        ISender sender)
+    {
+        var getQuery = new GetTicketQuery(id);
+
+        var response = await sender.Send(getQuery);
+
+        return response.Match(Results.Ok,
+            Results.NotFound);
     }
 
     internal static async Task<IResult> GetTicketsAsync(

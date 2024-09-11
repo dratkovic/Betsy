@@ -7,7 +7,7 @@ using ErrorOr;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Betsy.Application.Tickets.Commands;
+namespace Betsy.Application.Tickets.Commands.Create;
 public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, ErrorOr<TicketResponse>>
 {
     private readonly IBetsyDbContext _dbContext;
@@ -54,6 +54,13 @@ public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, E
             {
                 return Error.Validation(description: result.Errors.First().Description);
             }
+        }
+
+        var validTicket = ticket.IsValid();
+
+        if(validTicket.IsError)
+        {
+            return Error.Validation(description: validTicket.Errors.First().Description);
         }
 
         _dbContext.Set<Ticket>().Add(ticket);
