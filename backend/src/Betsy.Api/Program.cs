@@ -28,6 +28,9 @@ builder.AddRedisOutputCache("betsy-cache");
 
 var app = builder.Build();
 
+// for the simplicity of the example enabling cors for all origins
+app.UseCors("AllowAll");
+
 app.MapDefaultEndpoints();
 
 app.UseExceptionHandler();
