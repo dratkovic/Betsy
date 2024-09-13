@@ -25,15 +25,16 @@ public sealed class Offer : EntityBase
 
         if (betTypes is null) return;
 
+        short i = 0;
         foreach (var (title, quota) in betTypes)
         {
-            AddBetType(title, quota);
+            AddBetType(title, quota, i++);
         }
     }
 
-    public BetType AddBetType(string title, decimal quota)
+    public BetType AddBetType(string title, decimal quota, short order = 0)
     {
-        var betType = new BetType(title, quota, Id, MatchId, IsSpecialOffer);
+        var betType = new BetType(title, quota, Id, MatchId, IsSpecialOffer, order);
 
         _betTypes.Throw("Betting type already exists").IfContains(betType);
 
