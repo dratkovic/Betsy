@@ -1,4 +1,5 @@
-﻿using Betsy.Domain.Common;
+﻿using System.Reflection.Metadata.Ecma335;
+using Betsy.Domain.Common;
 using ErrorOr;
 using Throw;
 using static System.Decimal;
@@ -23,7 +24,7 @@ public sealed class Ticket : EntityBase
 
     private Ticket() { }
 
-    public Ticket(
+    private Ticket(
         Guid userId, 
         decimal ticketAmount,
         List<BetType>? selectedBetTypes = null,
@@ -46,6 +47,34 @@ public sealed class Ticket : EntityBase
                 }
             }
         }
+    }
+
+    public static ErrorOr<Ticket> Create(
+        Guid userId,
+        decimal ticketAmount,
+        List<BetType>? selectedBetTypes = null,
+        Guid? id = null)
+    {
+        Ticket instance;
+        try
+        {
+            instance = new Ticket(userId, ticketAmount, selectedBetTypes, id);
+        }
+        catch(Exception e)
+        {
+            return Error.Validation(description: e.Message);
+        }
+
+        instance._domainEvents.Add(new TicketCreatedEvent(instance));
+
+        var validation = instance.IsValid();
+
+        if(validation.IsError)
+        {
+            return Error.Validation(description: validation.Errors.First().Description);
+        }
+
+        return instance;
     }
 
     public ErrorOr<TicketOfferSelection> AddOfferSelection(BetType selectedBetType)

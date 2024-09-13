@@ -24,17 +24,8 @@ public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, E
     public async Task<ErrorOr<TicketResponse>> Handle(CreateTicketCommand request, CancellationToken cancellationToken)
     {
         var userId = _userSession.GetCurrentUser().Id;
-
-        Ticket ticket;
-        try
-        {
-            ticket = new Ticket(userId, request.TicketAmount);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error creating ticket");
-            return Error.Validation(description: e.Message);
-        }
+        
+        var ticket = Ticket.Create(userId, request.TicketAmount);
 
         var betTypes = await _dbContext.Set<BetType>()
             .Include(x => x.Match)
@@ -46,26 +37,16 @@ public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, E
             return Error.Validation(description: "Invalid bet types");
         }
 
-        foreach (var betType in betTypes)
-        {
-            var result = ticket.AddOfferSelection(betType);
+        var ticketCreator = Ticket.Create(userId, request.TicketAmount,betTypes);
 
-            if (result.IsError)
-            {
-                return Error.Validation(description: result.Errors.First().Description);
-            }
+        if(ticketCreator.IsError)
+        {
+            return Error.Validation(description: ticketCreator.Errors.First().Description);
         }
 
-        var validTicket = ticket.IsValid();
-
-        if(validTicket.IsError)
-        {
-            return Error.Validation(description: validTicket.Errors.First().Description);
-        }
-
-        _dbContext.Set<Ticket>().Add(ticket);
+        _dbContext.Set<Ticket>().Add(ticketCreator.Value);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return new TicketResponse(ticket, betTypes);
+        return new TicketResponse(ticketCreator.Value, betTypes);
     }
 }
