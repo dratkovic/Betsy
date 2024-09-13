@@ -27,11 +27,18 @@ var sql = builder.AddSqlServer("betsy-sql-server")
 var sqlDb = sql.AddDatabase("betsy-db");
 
 // * API *
-builder.AddProject<Projects.Betsy_Api>("betsy-api")
+var api = builder.AddProject<Projects.Betsy_Api>("betsyapi")
     .WithReference(redis)
     .WithReference(sqlDb)
     .WaitFor(sqlDb)
     .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("http"));
+
+// * Betsy Vue UI *
+builder.AddNpmApp("betsy-ui", "../../../frontend/src/betsy-ui")
+    .WithReference(api)
+    .WithHttpEndpoint(env: "PORT")
+    .WithExternalHttpEndpoints()
+    .PublishAsDockerFile();
 
 await using var app = builder.Build();
 
