@@ -6,35 +6,20 @@
           <v-card-title class="text-center">Login</v-card-title>
           <v-card-item>
             <v-form ref="refForm" novalidate @submit.prevent="submit">
-              <v-text-field
-                v-model="loginRequest.email"
-                label="Email"
-                prepend-inner-icon="mdi-email"
-                :rules="[requiredValidator, emailValidator]"
-              ></v-text-field>
+              <v-text-field v-model="loginRequest.email" label="Email" prepend-inner-icon="mdi-email"
+                :rules="[requiredValidator, emailValidator]"></v-text-field>
 
-              <v-text-field
-                v-model="loginRequest.password"
-                label="Password"
-                prepend-inner-icon="mdi-key"
-                :rules="[passwordValidator]"
-                type="password"
-              ></v-text-field>
+              <v-text-field v-model="loginRequest.password" label="Password" prepend-inner-icon="mdi-key"
+                :rules="[passwordValidator]" type="password"></v-text-field>
 
-              <v-btn
-                block
-                class="mt-2"
-                color="red-darken-1"
-                type="submit"
-                variant="elevated"
-              >
+              <v-btn block class="mt-2" color="red-darken-1" type="submit" variant="elevated">
                 Submit
               </v-btn>
             </v-form>
           </v-card-item>
 
           <v-card-actions>
-              <v-btn block to="/register"> Register </v-btn>
+            <v-btn block to="/register"> Register </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -59,20 +44,20 @@ const loginRequest = ref({
 const router = useRouter()
 
 async function submit() {
-   const {valid} = await refForm.value.validate()
+  const { valid } = await refForm.value.validate()
 
-   if(!valid) 
-     return;
-     
+  if (!valid)
+    return;
+
   appStore.login(loginRequest.value)
-  .then(() => {
-    router.push("/");
-  })
-  .catch(error => {
-    if(error as ValidationError)
-      appStore.showError(error.description);
-    else
-      appStore.showError("Cannot comunicate with the server. Please try again later.");
+    .then(() => {
+      router.push("/");
+    })
+    .catch(error => {
+      if (error as ValidationError)
+        appStore.showError(error.description);
+      else
+        appStore.showError("Cannot comunicate with the server. Please try again later.");
     })
 }
 

@@ -1,27 +1,27 @@
 <template>
   <v-app>
     <v-layout class="rounded rounded-md">
-    <v-app-bar density="compact">
-      <v-btn to="/">Dashboard</v-btn>
-      <v-btn to="/tickets">Tickets</v-btn>
-      <v-spacer></v-spacer>
+      <v-app-bar density="compact">
+        <v-btn to="/">Dashboard</v-btn>
+        <v-btn to="/tickets">Tickets</v-btn>
+        <v-spacer></v-spacer>
 
-      <p>Hello {{appStore.user?.firstName }} {{ appStore.user?.lastName }}</p>
-      <v-btn icon @click="changeTheme">
-        <v-icon :icon="darkTheme ? 'mdi-weather-night' : 'mdi-weather-sunny'"></v-icon>
-      </v-btn>
-      
-      <v-btn size="small" text="Logout" to="/login" variant="outlined" @click="logout()"> </v-btn>
-    </v-app-bar>
+        <p>Hello {{ appStore.user?.firstName }} {{ appStore.user?.lastName }}</p>
+        <v-btn icon @click="changeTheme">
+          <v-icon :icon="darkTheme ? 'mdi-weather-night' : 'mdi-weather-sunny'"></v-icon>
+        </v-btn>
 
-    
-    <RouterView >
-    </RouterView>
-    
-    <app-footer/> 
+        <v-btn size="small" text="Logout" to="/login" variant="outlined" @click="logout()"> </v-btn>
+      </v-app-bar>
+
+
+      <RouterView>
+      </RouterView>
+
+      <app-footer />
     </v-layout>
   </v-app>
-  
+
 </template>
 
 <script lang="ts" setup>
