@@ -15,6 +15,10 @@ const instance = axios.create({
 const onRequest = (config: InternalAxiosRequestConfig<any>): InternalAxiosRequestConfig<any> => {
     const appStore = useAppStore();
     appStore.startServerRequest();
+    if (appStore.user) {
+        config.headers.Authorization = `Bearer ${appStore.user.token}`
+    }
+
     console.info(`[request] [${JSON.stringify(config)}]`);
     return config;
 }

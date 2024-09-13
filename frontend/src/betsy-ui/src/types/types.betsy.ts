@@ -63,7 +63,7 @@ export interface CreateTicketRequest {
     selectedBetTypesIds: string[];
 }
 
-export interface TicketResponse {
+export interface TicketInfo {
     id: string;
     ticketAmount: number;
     stake: number;

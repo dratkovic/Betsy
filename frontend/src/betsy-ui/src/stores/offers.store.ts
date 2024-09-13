@@ -8,14 +8,19 @@ export const useOfferStore = defineStore('offer', {
         offers: [] as Offer[],
         totalRecords: 0,
         currentPage: 1,
-        pageSize: 20,
+        pageSize: 30,
+        filter: ""
     }),
     actions: {
         async refreshOffers() {
-            offerService.getOffers({ "page": this.currentPage, "pageSize": this.pageSize }).then(response => {
+            offerService.getOffers({ "page": this.currentPage, "pageSize": this.pageSize }, this.filter).then(response => {
                 this.offers = response.data
                 this.totalRecords = response.totalRecords
             })
+        },
+        setFilter(filter: string) {
+            this.filter = filter
+            this.refreshOffers()
         }
     },
     getters: {

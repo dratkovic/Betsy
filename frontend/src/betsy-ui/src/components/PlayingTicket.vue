@@ -57,6 +57,7 @@
                 class="mt-2"
                 color="green-accent-2"
                 variant="elevated"
+                @click="playTicket"
               >
                 Play
               </v-btn>
@@ -79,14 +80,24 @@
 import { usePlayingTicketStore } from '@/stores/playing-ticket.store';
 import { SelectedBetType } from '@/types/selected-bet.type';
 import { storeToRefs } from 'pinia';
+import ticketService from '@/services/ticket.service';
 
+const router = useRouter()
 const playingTicketStore = usePlayingTicketStore();
 const { ticketAmount } = storeToRefs(playingTicketStore)
-const someAmount = ref(0);
 
 function removeSelectedBet(selectedBet: SelectedBetType) {
     playingTicketStore.removeSelectedBet(selectedBet);
 }
+
+function playTicket() {
+    const selectedBets = playingTicketStore.selectedBets.map(x=> x.SelectedBetType.id )
+    ticketService.createTicket(playingTicketStore.ticketAmount, selectedBets)
+                .then(() => {
+                  playingTicketStore.clearTicket();
+                  router.push('/tickets');
+                });
+  } 
 </script>
 
 <style scoped>
@@ -105,9 +116,6 @@ function removeSelectedBet(selectedBet: SelectedBetType) {
     letter-spacing: 0.03125em !important;
     font-family: "Roboto", sans-serif;
     text-transform: none !important;
-}
-
-.bet-info{
 }
 
 </style>

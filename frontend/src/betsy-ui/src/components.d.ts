@@ -12,5 +12,6 @@ declare module 'vue' {
     PlayingTicket: typeof import('./components/PlayingTicket.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Ticket: typeof import('./components/Ticket.vue')['default']
   }
 }

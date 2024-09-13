@@ -2,8 +2,8 @@
   <v-app>
     <v-layout class="rounded rounded-md">
     <v-app-bar density="compact">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
+      <v-btn to="/">Dashboard</v-btn>
+      <v-btn to="/tickets">Tickets</v-btn>
       <v-spacer></v-spacer>
 
       <p>Hello {{appStore.user?.firstName }} {{ appStore.user?.lastName }}</p>
@@ -15,10 +15,7 @@
     </v-app-bar>
 
     
-    <RouterView v-slot="{ Component }">
-      <v-fade-transition>
-        <component :is="Component" />
-      </v-fade-transition>
+    <RouterView >
     </RouterView>
     
     <app-footer/> 

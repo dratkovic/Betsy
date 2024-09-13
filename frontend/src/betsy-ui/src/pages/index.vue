@@ -4,6 +4,13 @@
     </v-navigation-drawer>
    <v-main class="d-flex align-center justify-center" >
    <v-container class="scrollable-main" fluid>
+    <v-row justify="center">
+      <v-btn class="mx-2" size="x-small" @click="setFilter('')">All</v-btn>
+      <v-btn class="mx-2" size="x-small" @click="setFilter('football')">Football</v-btn>
+      <v-btn class="mx-2" size="x-small" @click="setFilter('tennis')">Tennis</v-btn>
+      <v-btn class="mx-2" size="x-small" @click="setFilter('special-offers')">Special Offers</v-btn>
+      
+    </v-row>
     <v-row  >
     <v-col
 v-for="(offer, i) in offerStore.offers"
@@ -26,7 +33,7 @@ v-for="(offer, i) in offerStore.offers"
         </v-card-subtitle>
         <v-card-actions>
           <v-row justify="space-around">
-            <v-col v-for="(betType, i) in offer.bettingTypes" :key="i" >
+            <v-col v-for="(betType,j) in offer.bettingTypes" :key="j" >
               <v-btn block size="x-large" @click="selectBet(betType, offer)">
               <v-row>
                 <v-col cols="12">
@@ -56,7 +63,7 @@ import { Offer, OfferBetType } from '@/types/types.betsy';
 
   const offerStore = useOfferStore();
   const playingTicketStore = usePlayingTicketStore();
-
+  
   onMounted(() => {
     offerStore.refreshOffers();
   });
@@ -73,13 +80,11 @@ import { Offer, OfferBetType } from '@/types/types.betsy';
     playingTicketStore.addSelectedBet(selectedBet);
   }
 
-  function unselectBet(bet: OfferBetType, offer: Offer) {
-    const selectedBet: SelectedBetType = {
-      SelectedBetType: bet,
-      Offer: offer,
-    };
-    playingTicketStore.removeSelectedBet(selectedBet);
+  function setFilter(filter: string) {
+    offerStore.setFilter(filter);
   }
+
+
 </script>
 
 <style scoped>
