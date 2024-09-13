@@ -24,7 +24,7 @@ v-for="(offer, i) in offerStore.offers"
         
       >
         <v-card-title>
-          <p class="text-center ">{{ offer.description }}</p>
+          <p class="text-center text-body-1 ">{{ offer.description }}</p>
         </v-card-title  >
         <v-card-subtitle>
           <h3 class="text-center ">{{ offer.sport }}</h3>

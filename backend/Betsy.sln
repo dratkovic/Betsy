@@ -23,10 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Betsy.Domain.Tests.Unit", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9126D8C-6B4C-42F0-A6D3-A2271F44BE1E}"
 	ProjectSection(SolutionItems) = preProject
+		..\Betsy.postman_collection.json = ..\Betsy.postman_collection.json
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Betsy.AppHost", "src\Betsy.AppHost\Betsy.AppHost.csproj", "{99128FDA-E96C-4069-9A1C-245F7D8D7FFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Betsy.AppHost", "src\Betsy.AppHost\Betsy.AppHost.csproj", "{99128FDA-E96C-4069-9A1C-245F7D8D7FFD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Betsy.ServiceDefaults", "src\Betsy.ServiceDefaults\Betsy.ServiceDefaults.csproj", "{5AD6DCDD-A894-4A5D-96A7-8F5BCF77878E}"
 EndProject

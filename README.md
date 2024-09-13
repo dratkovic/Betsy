@@ -57,3 +57,9 @@ Even though my personal choice for code architecture would be Vertical Slice, I 
 Code is written using .NET 8 and C# 12. For unit tests I wrote a few to demonstrate knowledge of writing it. Integration tests are written for the whole api. SQL Server is used for the database in combination with the EF Core as ORM. Flow control is done by using ErrorOr framework to avoid using Exceptions as it, having performance in mind. Cache is implemented by using Output Cache in combination with Redis as a distributed cache. This makes scaling easy for reads in case of peaks. Telemetry is implemented using OpenTelemetry. Prometheus is used as collector and Grafana for visualization and metrics.
 
   Orchestration is done by the cool Aspire .NET technology.
+
+## How it looks?
+
+![alt text](https://github.com/dratkovic/betsy/blob/main/webapp.png?raw=true)
+
+![alt text](https://github.com/dratkovic/betsy/blob/main/aspire.png?raw=true)
