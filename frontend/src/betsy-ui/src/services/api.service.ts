@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import authService from './auth.service';
-import { ValidationError } from '@/types/models/types.betsy';
+import { ValidationError } from '@/types/types.betsy';
 import { useAppStore } from '@/stores/app.store';
 
 const instance = axios.create({

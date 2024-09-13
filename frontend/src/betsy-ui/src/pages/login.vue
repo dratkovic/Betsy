@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { useAppStore } from "@/stores/app.store";
-import { ValidationError } from "@/types/models/types.betsy";
+import { ValidationError } from "@/types/types.betsy";
 import { emailValidator, passwordValidator, requiredValidator } from "@/utils/validators";
 import { ref } from "vue";
 
@@ -56,24 +56,24 @@ const loginRequest = ref({
   password: "P@ssword12",
 });
 
-const isLoading = ref(false);
+const router = useRouter()
 
 async function submit() {
    const {valid} = await refForm.value.validate()
 
    if(!valid) 
      return;
-   
-  isLoading.value = true;
-  
-    appStore.login(loginRequest.value).catch(error => {
-      if(error as ValidationError)
-        appStore.showError(error.description);
-      else
+     
+  appStore.login(loginRequest.value)
+  .then(() => {
+    router.push("/");
+  })
+  .catch(error => {
+    if(error as ValidationError)
+      appStore.showError(error.description);
+    else
       appStore.showError("Cannot comunicate with the server. Please try again later.");
-    }).finally(() => {
-      isLoading.value = false;
-    });
+    })
 }
 
 </script>

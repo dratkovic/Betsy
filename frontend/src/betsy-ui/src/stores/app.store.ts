@@ -1,6 +1,6 @@
 import authService from '@/services/auth.service'
 import tokenService from '@/services/token.service'
-import { LoginRequest, User } from '@/types/models/types.betsy'
+import { LoginRequest, RegisterRequest, User } from '@/types/types.betsy'
 import { defineStore } from 'pinia'
 
 const initialUser = tokenService.getUser()
@@ -15,7 +15,14 @@ export const useAppStore = defineStore('app', {
     actions: {
         login(login: LoginRequest): Promise<User> {
             return authService.login(login).then(response => {
-                this.user = response
+                this.user = response as User
+
+                return response
+            })
+        },
+        register(register: RegisterRequest): Promise<User> {
+            return authService.register(register).then(response => {
+                this.user = response as User
 
                 return response
             })

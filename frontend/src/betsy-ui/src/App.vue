@@ -7,9 +7,9 @@
         indeterminate
       ></v-progress-circular>
     </v-overlay>
-    <v-main>
+    
       <router-view />
-    </v-main>
+    
         <v-snackbar  v-model="appStore.errorSnackbar" color="red-darken-1" timeout="2500"
       >{{ appStore.errorMessage }}</v-snackbar
     >

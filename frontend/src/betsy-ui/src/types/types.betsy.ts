@@ -78,3 +78,8 @@ export interface ValidationError {
     description: string
 }
 
+export interface PaginationQuery {
+    page: number;
+    pageSize: number;
+}
+

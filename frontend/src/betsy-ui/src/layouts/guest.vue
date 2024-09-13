@@ -1,14 +1,16 @@
 <template>
   <v-app>
     <v-main>
-       <RouterView v-slot="{ Component }">
-        <v-fade-transition>
+       
+      <router-view v-slot="{ Component }">
+        <v-scale-transition>
           <component :is="Component" />
-        </v-fade-transition>
-      </RouterView>
+        </v-scale-transition>
+      </router-view>
+    
     </v-main>
-  </v-app>   
-  <app-footer/> 
+    <app-footer/> 
+  </v-app>     
 </template>
 
 <script lang="ts" setup>

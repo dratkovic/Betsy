@@ -1,22 +1,22 @@
-import { User } from "@/types/models/types.betsy"
+import { User } from "@/types/types.betsy"
 
 class TokenService {
-  getLocalAccessToken():string | null {
-        const user = this.getUser()
+  getLocalAccessToken(): string | null {
+    const user = this.getUser()
 
-        return user?.token || null
+    return user?.token || null
   }
 
   updateLocalAccessToken(token: string) {
     const user = this.getUser()
-    if (!user) 
+    if (!user)
       return
-    
+
     user.token = token
     localStorage.setItem("user", JSON.stringify(user))
   }
 
-  getUser() : User | null {
+  getUser(): User | null {
     const localStorageUser = localStorage.getItem("user")
     if (!localStorageUser) {
       return null
@@ -25,7 +25,7 @@ class TokenService {
     return user
   }
 
-  setUser(user:User) {
+  setUser(user: User) {
     localStorage.setItem("user", JSON.stringify(user))
   }
 

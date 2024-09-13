@@ -1,14 +1,15 @@
-import { LoginRequest, RegisterRequest, User } from '@/types/models/types.betsy';
+import { LoginRequest, RegisterRequest, User } from '@/types/types.betsy';
 import api from './api.service';
 import tokenService from './token.service';
+import { AxiosResponse } from 'axios';
 
 class AuthService {
     login(loginRequest: LoginRequest): Promise<User> {
         return api
-            .post<LoginRequest, User>("/login", loginRequest)
+            .post<LoginRequest, AxiosResponse<User>>("/login", loginRequest)
             .then(response => {
-                tokenService.setUser(response)
-                return response
+                tokenService.setUser(response.data)
+                return response.data
             })
     }
 
@@ -17,10 +18,10 @@ class AuthService {
     }
 
     register(registerRequest: RegisterRequest): Promise<User> {
-        return api.post<RegisterRequest, User>("/register", registerRequest)
+        return api.post<RegisterRequest, AxiosResponse<User>>("/register", registerRequest)
             .then(response => {
-                tokenService.setUser(response)
-                return response
+                tokenService.setUser(response.data)
+                return response.data
             })
     }
 }
