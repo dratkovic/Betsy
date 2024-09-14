@@ -19,6 +19,7 @@ public class LoginQueryHandler(
     {
         var email = query.Email.ToLower();
         var user = await _dbContext.Set<User>()
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
 
         return user is null || !user.IsCorrectPasswordHash(query.Password, _passwordHasher)

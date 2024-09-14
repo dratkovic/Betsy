@@ -1,7 +1,7 @@
 import { SelectedBetType } from '@/types/selected-bet.type'
 import { defineStore } from 'pinia'
 
-
+// example using options store
 export const usePlayingTicketStore = defineStore('playingTicketStore', {
     state: () => ({
         selectedBets: [] as SelectedBetType[],
@@ -10,8 +10,10 @@ export const usePlayingTicketStore = defineStore('playingTicketStore', {
     actions: {
         addSelectedBet(selectedBet: SelectedBetType) {
             const existingBet = this.selectedBets.find(bet => bet.SelectedBetType.id === selectedBet.SelectedBetType.id)
-            if (existingBet)
+            if (existingBet) {
+                this.selectedBets = this.selectedBets.filter(bet => bet !== existingBet)
                 return
+            }
 
             const existingOffer = this.selectedBets.find(bet => bet.Offer.matchId === selectedBet.Offer.matchId)
             if (existingOffer)
@@ -39,7 +41,9 @@ export const usePlayingTicketStore = defineStore('playingTicketStore', {
         },
         totalPossibleWin(): number {
             return Math.round(((this.totalOdds * this.betAmount) + Number.EPSILON) * 100) / 100
+        },
+        selectedBetTypesIds(): string[] {
+            return this.selectedBets.map(bet => bet.SelectedBetType.id)
         }
-
     }
 })

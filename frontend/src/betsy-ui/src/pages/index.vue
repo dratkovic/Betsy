@@ -25,7 +25,8 @@
             <v-card-actions>
               <v-row justify="space-around">
                 <v-col v-for="(betType, j) in offer.bettingTypes" :key="j">
-                  <v-btn block size="x-large" @click="selectBet(betType, offer)">
+                  <v-btn block size="x-large" @click="selectBet(betType, offer)"
+                    :class="{ 'selected-bet': isSelectedBet(betType) }">
                     <v-row>
                       <v-col cols="12">
                         <p class=" offer-btn-text-title">{{ betType.title }}</p>
@@ -50,7 +51,7 @@
 import { useOfferStore } from '@/stores/offers.store';
 import { usePlayingTicketStore } from '@/stores/playing-ticket.store';
 import { SelectedBetType } from '@/types/selected-bet.type';
-import { Offer, OfferBetType } from '@/types/types.betsy';
+import { BetType, Offer, OfferBetType } from '@/types/types.betsy';
 
 const offerStore = useOfferStore();
 const playingTicketStore = usePlayingTicketStore();
@@ -69,6 +70,10 @@ function selectBet(bet: OfferBetType, offer: Offer) {
     Offer: offer,
   };
   playingTicketStore.addSelectedBet(selectedBet);
+}
+
+function isSelectedBet(betType: OfferBetType): boolean {
+  return playingTicketStore.selectedBetTypesIds.some((bet) => bet === betType.id);
 }
 
 function setFilter(filter: string) {
@@ -101,5 +106,9 @@ function setFilter(filter: string) {
   letter-spacing: 0.03125em !important;
   font-family: "Roboto", sans-serif;
   text-transform: none !important;
+}
+
+.selected-bet {
+  background: #00000069;
 }
 </style>

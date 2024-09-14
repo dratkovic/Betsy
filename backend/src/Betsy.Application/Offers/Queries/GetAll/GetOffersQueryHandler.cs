@@ -26,6 +26,7 @@ public class GetOffersQueryHandler : IRequestHandler<GetOffersQuery, ErrorOr<Pag
         var query = _dbContext.Set<Offer>()
             .Include(x => x.Match)
             .Include(x => x.BetTypes.OrderBy(y => y.Order))
+            .AsNoTracking()
             .Where(x => !x.IsDeleted &&
                         x.IsSpecialOffer == request.SpecialOffers &&
                         x.Match.StartsAtUtc > fiveMinutesFromNow);

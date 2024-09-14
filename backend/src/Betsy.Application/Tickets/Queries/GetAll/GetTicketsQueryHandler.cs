@@ -29,6 +29,7 @@ internal class GetTicketsQueryHandler : IRequestHandler<GetTicketsQuery, ErrorOr
             .Include(x => x.OfferSelections)
             .ThenInclude(x => x.BetType)
             .ThenInclude(x => x.Match)
+            .AsNoTracking()
             .Where(x => x.UserId == user.Id)
             .OrderByDescending(x => x.CreatedAt);
 
